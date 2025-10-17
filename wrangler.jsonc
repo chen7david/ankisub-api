@@ -15,6 +15,13 @@
         "queue": "ankisub-production",
         "binding": "ANKISUB_QUEUE"
       }
+    ],
+    "consumers": [
+      {
+        "queue": "ankisub-production",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5
+      }
     ]
   },
 
