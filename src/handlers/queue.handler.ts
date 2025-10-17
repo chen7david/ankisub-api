@@ -3,30 +3,20 @@ import type { MessageBatch } from "@cloudflare/workers-types";
 // The actual simplified R2 Event structure when configured via Queue Notification.
 interface R2QueueMessage {
   account: string;
-  bucket: string; // The R2 bucket name
+  bucket: string;
   action: string;
   object: {
-    key: string; // The object key (file path)
+    key: string;
     eTag: string;
     size: number;
   };
   eventTime: string;
 }
 
-// NOTE: You must ensure 'ANKISUB_BUCKET', 'ANKISUB_DB', and 'GEMINI_API_KEY'
-// are correctly bound in your wrangler.jsonc file and injected into this handler.
-interface CloudflareBindings {
-  ANKISUB_BUCKET: R2Bucket; // Assuming this is your R2 binding name
-  ANKISUB_DB: D1Database;
-  GEMINI_API_KEY: string;
-}
-
 export async function queueHandler(
   batch: MessageBatch,
   env: CloudflareBindings
 ): Promise<void> {
-  console.log(`Received batch of ${batch.messages.length} R2 events.`);
-
   for (const message of batch.messages) {
     let objectKey: string | undefined;
     let bucketName: string | undefined;
@@ -59,17 +49,15 @@ export async function queueHandler(
         );
       }
 
-      console.log(`Processing R2 Event for file: ${objectKey}`);
-
       // A. Fetch the SRT file content from R2 using the correct binding name
       const object = await env.ANKISUB_BUCKET.get(objectKey);
 
       if (object) {
         const srtContent = await object.text();
-        console.log(
-          `Successfully fetched ${objectKey}. Content size: ${srtContent.length} bytes.`
-        );
 
+        console.log(`Processing SRT file with content: ${srtContent}`);
+        // Here you would add the logic to process the SRT content,
+        // e.g., perform translation using the Gemini API key.
         // B. Hypothetical: Perform AI processing using the GEMINI_API_KEY
         // Example: await callGeminiApi(srtContent, env.GEMINI_API_KEY);
 
