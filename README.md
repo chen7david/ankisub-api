@@ -1,21 +1,5 @@
-```txt
-npm install
-npm run dev
-```
+Had to run below code to link bucket to queue, there was no way to define this in config or code:
 
-```txt
-npm run deploy
-```
-
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
-
-```txt
-npm run cf-typegen
-```
-
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
-
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
+```bash
+npx wrangler r2 bucket notification create ankisub-production --event-type object-create --queue ankisub-production
 ```
