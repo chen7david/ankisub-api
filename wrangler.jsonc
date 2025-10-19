@@ -3,12 +3,15 @@
   "name": "r2-worker-pipeline",
   "main": "src/index.ts",
   "compatibility_date": "2025-10-11",
-  "observability": { "enabled": true },
-
+  "observability": {
+    "enabled": true
+  },
   "r2_buckets": [
-    { "binding": "ANKISUB_BUCKET", "bucket_name": "ankisub-production" }
+    {
+      "binding": "ANKISUB_BUCKET",
+      "bucket_name": "ankisub-production"
+    }
   ],
-
   "queues": {
     "producers": [
       {
@@ -24,14 +27,14 @@
       }
     ]
   },
-
   "d1_databases": [
     {
       "binding": "ANKISUB_DB",
-      "database_id": "94a1d49a-e751-40cc-b83d-607f565cd0de"
+      "database_name": "ankisub-production",
+      "database_id": "07e18631-9d25-413d-b951-e4f967c60729",
+      "remote": true
     }
   ],
-
   "vars": {
     "GEMINI_API_KEY": "your_api_key_here"
   }
