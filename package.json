@@ -2,18 +2,31 @@
   "name": "r2-worker-pipeline",
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev --port 3000 --local",
+    "dev:local": "wrangler dev --port 3000 --local",
+    "dev": "wrangler dev --port 3000",
     "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "node scripts/migrate-local.js",
+    "db:migrate:remote": "node scripts/migrate-remote.js",
+    "db:push:local": "wrangler d1 execute ANKISUB_DB --local --command \"$(cat drizzle/migrations/schema.sql)\"",
+    "db:studio": "drizzle-kit studio",
+    "db:introspect": "drizzle-kit introspect",
+    "db:check": "drizzle-kit check",
+    "db:create:local": "wrangler d1 create ANKISUB_DB --local",
+    "db:list": "wrangler d1 list",
+    "db:info": "wrangler d1 info ANKISUB_DB"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20251011.0",
     "@google/genai": "^1.25.0",
     "@hono/zod-validator": "^0.7.4",
+    "drizzle-orm": "^0.44.6",
     "hono": "^4.10.0",
     "subtitle": "^4.2.2-alpha.0"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.31.5",
     "wrangler": "^4.43.0"
   }
 }
