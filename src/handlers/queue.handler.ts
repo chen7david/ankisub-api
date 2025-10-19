@@ -1,4 +1,5 @@
 import type { MessageBatch } from "@cloudflare/workers-types";
+import { SubtitleService } from "../services/subtitle.service";
 
 // The actual simplified R2 Event structure when configured via Queue Notification.
 interface R2QueueMessage {
@@ -54,8 +55,10 @@ export async function queueHandler(
 
       if (object) {
         const srtContent = await object.text();
+        const subtitleService = new SubtitleService();
+        const cues = subtitleService.parse(srtContent);
 
-        console.log(`Processing SRT file with content: ${srtContent}`);
+        console.log(`Processing SRT file with content: ${srtContent}`, cues);
         // Here you would add the logic to process the SRT content,
         // e.g., perform translation using the Gemini API key.
         // B. Hypothetical: Perform AI processing using the GEMINI_API_KEY
